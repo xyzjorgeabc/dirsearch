@@ -17,8 +17,3 @@ int get_closest_lesser_n (int *arr, int len, int needle, int *index) {
   else return get_closest_lesser_n(arr, middle, needle, index);
 }
 
-int find (int *arr, int len, int needle) {
-  for (int i = 0; i < len; i++) if(arr[i] == needle) return i;
-  return -1;
-}
-
