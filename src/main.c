@@ -2,6 +2,7 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <linux/limits.h>
 #include <sys/ioctl.h>
 #include <signal.h>
@@ -106,7 +107,10 @@ int read_dir_files() {
   getcwd(current_path, PATH_MAX);
   current_dir = opendir(current_path);
   while ((dirp = readdir(current_dir)) != NULL) {
-    if (!strcmp(dirp->d_name, "..") || !strcmp(dirp->d_name, ".")) continue;
+    struct stat file_stat;
+    stat(dirp->d_name, &file_stat);
+
+    if (S_ISDIR(file_stat.st_mode)) continue;
     if (read_file(dirp->d_name, &(files[files_n])) < 0) return -1;
     files_n++;
   }
